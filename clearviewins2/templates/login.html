@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block title %}Log In - ClearInsure{% endblock %}
+{% block extra_head %}
+<style>
+  .login-card {
+    width: 100%;
+    max-width: 400px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(59,59,179,0.08);
+    padding: 2rem 1.5rem 1.2rem 1.5rem;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    opacity: 0;
+    transform: translateY(-30px);
+    animation: dropIn 0.5s forwards;
+  }
+  @keyframes dropIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .login-toggle-btn {
+    min-width: 120px;
+    font-weight: bold;
+    margin: 0 0.5rem 1rem 0.5rem;
+  }
+  .login-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.2rem;
+  }
+</style>
+{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <h2 class="text-center mb-4">Log In</h2>
+  <div class="d-flex flex-wrap justify-content-center mb-3">
+    <button class="btn btn-outline-primary login-toggle-btn" id="btn-user">User</button>
+    <button class="btn btn-outline-primary login-toggle-btn" id="btn-insurer">Insurance Company</button>
+    <button class="btn btn-outline-primary login-toggle-btn" id="btn-regulator">Regulator</button>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8" id="login-container"></div>
+  </div>
+</div>
+{% endblock %}
+{% block extra_scripts %}
+<script>
+function renderLogin(type) {
+  const container = document.getElementById('login-container');
+  container.innerHTML = '';
+  let formHtml = '';
+  if (type === 'user') {
+    formHtml = `
+      <form class='login-card'>
+        <h5 class='mb-3 text-center'>User Login</h5>
+        <div class='mb-3'>
+          <label for='user-email' class='form-label'>Email</label>
+          <input type='email' class='form-control' id='user-email' placeholder='Enter your email'>
+        </div>
+        <div class='mb-3'>
+          <label for='user-password' class='form-label'>Password</label>
+          <input type='password' class='form-control' id='user-password' placeholder='Enter your password'>
+        </div>
+        <div class='login-actions'>
+          <button type='button' class='btn btn-link'>Forgot Password?</button>
+          <button type='button' class='btn btn-link' onclick="window.location.href='/signup/'">Sign Up Instead</button>
+        </div>
+        <button type='submit' class='btn btn-primary w-100 mt-2'>Log In</button>
+      </form>
+    `;
+  } else if (type === 'insurer') {
+    formHtml = `
+      <form class='login-card'>
+        <h5 class='mb-3 text-center'>Insurance Company Login</h5>
+        <div class='mb-3'>
+          <label for='insurer-employeeid' class='form-label'>Employee ID</label>
+          <input type='text' class='form-control' id='insurer-employeeid' placeholder='Enter your employee ID'>
+        </div>
+        <div class='mb-3'>
+          <label for='insurer-email' class='form-label'>Email</label>
+          <input type='email' class='form-control' id='insurer-email' placeholder='Enter your email'>
+        </div>
+        <div class='mb-3'>
+          <label for='insurer-password' class='form-label'>Password</label>
+          <input type='password' class='form-control' id='insurer-password' placeholder='Enter your password'>
+        </div>
+        <div class='login-actions'>
+          <button type='button' class='btn btn-link'>Forgot Password?</button>
+          <button type='button' class='btn btn-link' onclick="window.location.href='/signup/'">Sign Up Instead</button>
+        </div>
+        <button type='submit' class='btn btn-primary w-100 mt-2'>Log In</button>
+      </form>
+    `;
+  } else if (type === 'regulator') {
+    formHtml = `
+      <form class='login-card'>
+        <h5 class='mb-3 text-center'>Regulator Login</h5>
+        <div class='mb-3'>
+          <label for='regulator-employeeid' class='form-label'>Employee ID</label>
+          <input type='text' class='form-control' id='regulator-employeeid' placeholder='Enter your employee ID'>
+        </div>
+        <div class='mb-3'>
+          <label for='regulator-email' class='form-label'>Email</label>
+          <input type='email' class='form-control' id='regulator-email' placeholder='Enter your email'>
+        </div>
+        <div class='mb-3'>
+          <label for='regulator-password' class='form-label'>Password</label>
+          <input type='password' class='form-control' id='regulator-password' placeholder='Enter your password'>
+        </div>
+        <div class='login-actions'>
+          <button type='button' class='btn btn-link'>Forgot Password?</button>
+          <button type='button' class='btn btn-link' onclick="window.location.href='/signup/'">Sign Up Instead</button>
+        </div>
+        <button type='submit' class='btn btn-primary w-100 mt-2'>Log In</button>
+      </form>
+    `;
+  }
+  container.innerHTML = formHtml;
+}
+
+document.getElementById('btn-user').onclick = () => renderLogin('user');
+document.getElementById('btn-insurer').onclick = () => renderLogin('insurer');
+document.getElementById('btn-regulator').onclick = () => renderLogin('regulator');
+
+// Show user login by default
+renderLogin('user');
+</script>
+{% endblock %}
