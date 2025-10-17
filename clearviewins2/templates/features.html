@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}Features - ClearInsure{% endblock %}
+{% block extra_head %}
+<style>
+  .feature-card {
+    width: 100%;
+    min-height: 140px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(59,59,179,0.08);
+    padding: 1.2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    opacity: 0;
+    transform: translateY(-30px);
+    animation: dropIn 0.5s forwards;
+  }
+  @keyframes dropIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <h2 class="text-center mb-4">Choose Your User Type</h2>
+  <div class="d-flex flex-wrap justify-content-center mb-3">
+    <button class="btn btn-outline-primary user-toggle-btn" id="btn-customer">Customer</button>
+    <button class="btn btn-outline-primary user-toggle-btn" id="btn-insurer">Insurer</button>
+    <button class="btn btn-outline-primary user-toggle-btn" id="btn-regulator">Regulator</button>
+    <button class="btn btn-outline-secondary user-toggle-btn" id="btn-all">All</button>
+  </div>
+  <div class="row" id="features-container"></div>
+</div>
+{% endblock %}
+{% block extra_scripts %}
+<script>
+const features = {
+  customer: [
+    { title: "View Policies", desc: "Easily view all your insurance policies in one place." },
+    { title: "Claims Tracking", desc: "Track the status of your insurance claims in real time." },
+    { title: "Premium Payments", desc: "Pay your premiums securely and on time." },
+    { title: "Policy Renewal", desc: "Renew your insurance policies with a few clicks." },
+    { title: "Support Center", desc: "Get help and support for all your insurance needs." }
+  ],
+  insurer: [
+    { title: "Customer Management", desc: "Manage your customers and their policies efficiently." },
+    { title: "Claims Processing", desc: "Process and approve claims with transparency." },
+    { title: "Product Listing", desc: "List and update insurance products for customers." },
+    { title: "Analytics Dashboard", desc: "View analytics and reports on your business." }
+  ],
+  regulator: [
+    { title: "Market Oversight", desc: "Monitor insurance market activities and compliance." },
+    { title: "Reporting Tools", desc: "Access detailed reports from insurers and customers." },
+    { title: "Policy Enforcement", desc: "Enforce regulations and ensure transparency." }
+  ]
+};
+
+
+function renderCards(userType) {
+  const container = document.getElementById('features-container');
+  container.innerHTML = '';
+  let allTypes = [];
+  if (userType === 'all') {
+    allTypes = ['customer', 'insurer', 'regulator'];
+  } else {
+    allTypes = [userType];
+  }
+  let cardIndex = 0;
+  allTypes.forEach(type => {
+    features[type].forEach((feature, idx) => {
+      const col = document.createElement('div');
+      col.className = 'col-12 col-sm-6 col-md-4 d-flex';
+      const card = document.createElement('div');
+      card.className = 'feature-card mb-3 flex-fill';
+      card.style.animationDelay = (cardIndex * 0.12) + 's';
+      card.innerHTML = `<h5>${feature.title}</h5><p class='mb-0'>${feature.desc}</p>`;
+      col.appendChild(card);
+      container.appendChild(col);
+      cardIndex++;
+    });
+  });
+}
+
+document.getElementById('btn-customer').onclick = () => renderCards('customer');
+document.getElementById('btn-insurer').onclick = () => renderCards('insurer');
+document.getElementById('btn-regulator').onclick = () => renderCards('regulator');
+document.getElementById('btn-all').onclick = () => renderCards('all');
+
+// Show customer by default
+renderCards('customer');
+</script>
+{% endblock %}

@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% block title %}Sign Up - ClearInsure{% endblock %}
+{% block extra_head %}
+<style>
+  .signup-card {
+    width: 100%;
+    max-width: 420px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(59,59,179,0.08);
+    padding: 2rem 1.5rem 1.2rem 1.5rem;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    opacity: 0;
+    transform: translateY(-30px);
+    animation: dropIn 0.5s forwards;
+  }
+  @keyframes dropIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .signup-toggle-btn {
+    min-width: 120px;
+    font-weight: bold;
+    margin: 0 0.5rem 1rem 0.5rem;
+  }
+  .signup-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.2rem;
+  }
+</style>
+{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <h2 class="text-center mb-4">Sign Up</h2>
+  <div class="d-flex flex-wrap justify-content-center mb-3">
+    <button class="btn btn-outline-primary signup-toggle-btn" id="btn-user">User</button>
+    <button class="btn btn-outline-primary signup-toggle-btn" id="btn-insurer">Insurance Company</button>
+    <button class="btn btn-outline-primary signup-toggle-btn" id="btn-regulator">Regulator</button>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8" id="signup-container"></div>
+  </div>
+</div>
+{% endblock %}
+{% block extra_scripts %}
+<script>
+const countryCodes = [
+  { code: '+254', name: 'Kenya' },
+  { code: '+255', name: 'Tanzania' },
+  { code: '+256', name: 'Uganda' },
+  { code: '+257', name: 'Burundi' },
+  { code: '+250', name: 'Rwanda' },
+  { code: '+211', name: 'South Sudan' },
+  { code: '+252', name: 'Somalia' },
+  { code: '+253', name: 'Djibouti' },
+  { code: '+248', name: 'Seychelles' },
+  { code: '+261', name: 'Madagascar' }
+];
+
+function countryCodeDropdown(id) {
+  return `<select class='form-select' id='${id}'>` +
+    countryCodes.map(c => `<option value='${c.code}'>${c.code} (${c.name})</option>`).join('') +
+    `</select>`;
+}
+
+function renderSignup(type) {
+  const container = document.getElementById('signup-container');
+  container.innerHTML = '';
+  let formHtml = '';
+  if (type === 'user') {
+    formHtml = `
+      <form class='signup-card'>
+        <h5 class='mb-3 text-center'>User Sign Up</h5>
+        <div class='mb-3'>
+          <label for='user-email' class='form-label'>Email</label>
+          <input type='email' class='form-control' id='user-email' placeholder='Enter your email'>
+        </div>
+        <div class='mb-3'>
+          <label for='user-password' class='form-label'>Password</label>
+          <input type='password' class='form-control' id='user-password' placeholder='Enter your password'>
+        </div>
+        <div class='mb-3 row'>
+          <div class='col-5'>
+            <label for='user-countrycode' class='form-label'>Country Code</label>
+            ${countryCodeDropdown('user-countrycode')}
+          </div>
+          <div class='col-7'>
+            <label for='user-phonenumber' class='form-label'>Phone Number</label>
+            <input type='tel' class='form-control' id='user-phonenumber' placeholder='Enter your phone number'>
+          </div>
+        </div>
+        <div class='signup-actions'>
+          <button type='button' class='btn btn-link' onclick="window.location.href='/login/'">Log In Instead</button>
+          <button type='button' class='btn btn-link'>Forgot Password?</button>
+        </div>
+        <button type='submit' class='btn btn-primary w-100 mt-2'>Sign Up</button>
+      </form>
+    `;
+  } else if (type === 'insurer') {
+    formHtml = `
+      <form class='signup-card'>
+        <h5 class='mb-3 text-center'>Insurance Company Sign Up</h5>
+        <div class='mb-3'>
+          <label for='insurer-employeeid' class='form-label'>Employee ID</label>
+          <input type='text' class='form-control' id='insurer-employeeid' placeholder='Enter your employee ID'>
+        </div>
+        <div class='mb-3'>
+          <label for='insurer-email' class='form-label'>Email</label>
+          <input type='email' class='form-control' id='insurer-email' placeholder='Enter your email'>
+        </div>
+        <div class='mb-3'>
+          <label for='insurer-password' class='form-label'>Password</label>
+          <input type='password' class='form-control' id='insurer-password' placeholder='Enter your password'>
+        </div>
+        <div class='mb-3 row'>
+          <div class='col-5'>
+            <label for='insurer-countrycode' class='form-label'>Country Code</label>
+            ${countryCodeDropdown('insurer-countrycode')}
+          </div>
+          <div class='col-7'>
+            <label for='insurer-phonenumber' class='form-label'>Phone Number</label>
+            <input type='tel' class='form-control' id='insurer-phonenumber' placeholder='Enter your phone number'>
+          </div>
+        </div>
+        <div class='signup-actions'>
+          <button type='button' class='btn btn-link' onclick="window.location.href='/login/'">Log In Instead</button>
+          <button type='button' class='btn btn-link'>Forgot Password?</button>
+        </div>
+        <button type='submit' class='btn btn-primary w-100 mt-2'>Sign Up</button>
+      </form>
+    `;
+  } else if (type === 'regulator') {
+    formHtml = `
+      <form class='signup-card'>
+        <h5 class='mb-3 text-center'>Regulator Sign Up</h5>
+        <div class='mb-3'>
+          <label for='regulator-employeeid' class='form-label'>Employee ID</label>
+          <input type='text' class='form-control' id='regulator-employeeid' placeholder='Enter your employee ID'>
+        </div>
+        <div class='mb-3'>
+          <label for='regulator-email' class='form-label'>Email</label>
+          <input type='email' class='form-control' id='regulator-email' placeholder='Enter your email'>
+        </div>
+        <div class='mb-3'>
+          <label for='regulator-password' class='form-label'>Password</label>
+          <input type='password' class='form-control' id='regulator-password' placeholder='Enter your password'>
+        </div>
+        <div class='mb-3 row'>
+          <div class='col-5'>
+            <label for='regulator-countrycode' class='form-label'>Country Code</label>
+            ${countryCodeDropdown('regulator-countrycode')}
+          </div>
+          <div class='col-7'>
+            <label for='regulator-phonenumber' class='form-label'>Phone Number</label>
+            <input type='tel' class='form-control' id='regulator-phonenumber' placeholder='Enter your phone number'>
+          </div>
+        </div>
+        <div class='signup-actions'>
+          <button type='button' class='btn btn-link' onclick="window.location.href='/login/'">Log In Instead</button>
+          <button type='button' class='btn btn-link'>Forgot Password?</button>
+        </div>
+        <button type='submit' class='btn btn-primary w-100 mt-2'>Sign Up</button>
+      </form>
+    `;
+  }
+  container.innerHTML = formHtml;
+}
+
+document.getElementById('btn-user').onclick = () => renderSignup('user');
+document.getElementById('btn-insurer').onclick = () => renderSignup('insurer');
+document.getElementById('btn-regulator').onclick = () => renderSignup('regulator');
+
+// Show user signup by default
+renderSignup('user');
+</script>
+{% endblock %}
