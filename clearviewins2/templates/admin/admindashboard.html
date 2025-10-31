@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard - ClearInsure{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <h2 class="text-center mb-4">Welcome, Super Admin!</h2>
+  <p class="text-center">You have access to all system features.</p>
+
+  <div class="text-center mt-5">
+    <a href="/admin/user-management/" class="btn btn-primary btn-lg">User Management</a>
+  </div>
+
+  {% if user_types %}
+  <div class="text-center mt-4">
+    <h4>Select User Type</h4>
+    <div class="btn-group mt-2">
+      <a href="/admin/user-management/normal/" class="btn btn-outline-primary">Normal Users</a>
+      <a href="/admin/user-management/insurance/" class="btn btn-outline-primary">Insurance Employees</a>
+      <a href="/admin/user-management/regulator/" class="btn btn-outline-primary">Regulator Users</a>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

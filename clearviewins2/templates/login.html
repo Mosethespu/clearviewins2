@@ -2,6 +2,7 @@
 {% block title %}Log In - ClearInsure{% endblock %}
 {% block extra_head %}
 <style>
+
   .login-card {
     width: 100%;
     max-width: 400px;
@@ -35,99 +36,45 @@
   }
 </style>
 {% endblock %}
+
 {% block content %}
 <div class="container py-4">
+  {% if messages %}
+    <div class="mb-3">
+      {% for message in messages %}
+        <div class="alert alert-danger" role="alert">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
   <h2 class="text-center mb-4">Log In</h2>
   <div class="d-flex flex-wrap justify-content-center mb-3">
-    <button class="btn btn-outline-primary login-toggle-btn" id="btn-user">User</button>
-    <button class="btn btn-outline-primary login-toggle-btn" id="btn-insurer">Insurance Company</button>
-    <button class="btn btn-outline-primary login-toggle-btn" id="btn-regulator">Regulator</button>
+    <button class="btn btn-outline-primary login-toggle-btn" disabled>User</button>
+    <button class="btn btn-outline-primary login-toggle-btn" disabled>Insurance Company</button>
+    <button class="btn btn-outline-primary login-toggle-btn" disabled>Regulator</button>
   </div>
   <div class="row justify-content-center">
-    <div class="col-12 col-md-8" id="login-container"></div>
+    <div class="col-12 col-md-8">
+      <form class="login-card" method="post" action="/login/">
+        {% csrf_token %}
+        <h5 class="mb-3 text-center">User Login</h5>
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input type="text" class="form-control" name="username" id="username" placeholder="Enter your username" required>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" name="password" id="password" placeholder="Enter your password" required>
+        </div>
+        <div class="login-actions">
+          <button type="button" class="btn btn-link" onclick="window.location.href='/forgotpassword/'">Forgot Password?</button>
+          <button type="button" class="btn btn-link" onclick="window.location.href='/signup/'">Sign Up Instead</button>
+        </div>
+        <button type="submit" class="btn btn-primary w-100 mt-2">Log In</button>
+      </form>
+      <div class="mt-2 text-center">
+        <small>Super Admin: <b>superadmin</b> / <b>SuperSecure!2025</b></small>
+      </div>
+    </div>
   </div>
 </div>
-{% endblock %}
-{% block extra_scripts %}
-<script>
-function renderLogin(type) {
-  const container = document.getElementById('login-container');
-  container.innerHTML = '';
-  let formHtml = '';
-  if (type === 'user') {
-    formHtml = `
-      <form class='login-card'>
-        <h5 class='mb-3 text-center'>User Login</h5>
-        <div class='mb-3'>
-          <label for='user-email' class='form-label'>Email</label>
-          <input type='email' class='form-control' id='user-email' placeholder='Enter your email'>
-        </div>
-        <div class='mb-3'>
-          <label for='user-password' class='form-label'>Password</label>
-          <input type='password' class='form-control' id='user-password' placeholder='Enter your password'>
-        </div>
-        <div class='login-actions'>
-          <button type='button' class='btn btn-link'>Forgot Password?</button>
-          <button type='button' class='btn btn-link' onclick="window.location.href='/signup/'">Sign Up Instead</button>
-        </div>
-        <button type='submit' class='btn btn-primary w-100 mt-2'>Log In</button>
-      </form>
-    `;
-  } else if (type === 'insurer') {
-    formHtml = `
-      <form class='login-card'>
-        <h5 class='mb-3 text-center'>Insurance Company Login</h5>
-        <div class='mb-3'>
-          <label for='insurer-employeeid' class='form-label'>Employee ID</label>
-          <input type='text' class='form-control' id='insurer-employeeid' placeholder='Enter your employee ID'>
-        </div>
-        <div class='mb-3'>
-          <label for='insurer-email' class='form-label'>Email</label>
-          <input type='email' class='form-control' id='insurer-email' placeholder='Enter your email'>
-        </div>
-        <div class='mb-3'>
-          <label for='insurer-password' class='form-label'>Password</label>
-          <input type='password' class='form-control' id='insurer-password' placeholder='Enter your password'>
-        </div>
-        <div class='login-actions'>
-          <button type='button' class='btn btn-link'>Forgot Password?</button>
-          <button type='button' class='btn btn-link' onclick="window.location.href='/signup/'">Sign Up Instead</button>
-        </div>
-        <button type='submit' class='btn btn-primary w-100 mt-2'>Log In</button>
-      </form>
-    `;
-  } else if (type === 'regulator') {
-    formHtml = `
-      <form class='login-card'>
-        <h5 class='mb-3 text-center'>Regulator Login</h5>
-        <div class='mb-3'>
-          <label for='regulator-employeeid' class='form-label'>Employee ID</label>
-          <input type='text' class='form-control' id='regulator-employeeid' placeholder='Enter your employee ID'>
-        </div>
-        <div class='mb-3'>
-          <label for='regulator-email' class='form-label'>Email</label>
-          <input type='email' class='form-control' id='regulator-email' placeholder='Enter your email'>
-        </div>
-        <div class='mb-3'>
-          <label for='regulator-password' class='form-label'>Password</label>
-          <input type='password' class='form-control' id='regulator-password' placeholder='Enter your password'>
-        </div>
-        <div class='login-actions'>
-          <button type='button' class='btn btn-link'>Forgot Password?</button>
-          <button type='button' class='btn btn-link' onclick="window.location.href='/signup/'">Sign Up Instead</button>
-        </div>
-        <button type='submit' class='btn btn-primary w-100 mt-2'>Log In</button>
-      </form>
-    `;
-  }
-  container.innerHTML = formHtml;
-}
-
-document.getElementById('btn-user').onclick = () => renderLogin('user');
-document.getElementById('btn-insurer').onclick = () => renderLogin('insurer');
-document.getElementById('btn-regulator').onclick = () => renderLogin('regulator');
-
-// Show user login by default
-renderLogin('user');
-</script>
 {% endblock %}

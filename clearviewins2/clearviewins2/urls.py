@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 
 from django.urls import path
+
 from clearviewins2 import views
 
 urlpatterns = [
@@ -27,4 +28,8 @@ urlpatterns = [
     path('blog/', views.blog, name='blog'),
     path('login/', views.login, name='login'),
     path('signup/', views.signup, name='signup'),
+    path('admindashboard/', views.admindashboard, name='admindashboard'),
+    path('logout/', views.logout, name='logout'),
+    path('admin/user-management/', views.user_management, name='user_management'),
+    path('admin/user-management/<str:usertype>/', views.user_management_type, name='user_management_type'),
 ]
